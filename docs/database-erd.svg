@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="100%" height="100%" style="background:#0f172a; font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <defs>
+    <linearGradient id="headerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#4f46e5" />
+      <stop offset="100%" stop-color="#6366f1" />
+    </linearGradient>
+    <linearGradient id="tenantGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#059669" />
+      <stop offset="100%" stop-color="#10b981" />
+    </linearGradient>
+    <linearGradient id="userGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#8b5cf6" />
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Title -->
+  <text x="600" y="45" fill="#f8fafc" font-size="24" font-weight="800" text-anchor="middle" letter-spacing="1">JULLEYONLINE MULTI-TENANT DATABASE ERD</text>
+  <text x="600" y="70" fill="#94a3b8" font-size="13" text-anchor="middle">Entity Relationship Diagram — Strict Tenant Isolation &amp; Optimistic Locking (8 Core Tables)</text>
+
+  <!-- 1. ORGANIZATIONS -->
+  <g transform="translate(60, 110)" filter="url(#shadow)">
+    <rect width="240" height="150" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">organizations</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#cbd5e1" font-size="11">name : VARCHAR(255)</text>
+    <text x="12" y="104" fill="#94a3b8" font-size="11">created_at : TIMESTAMP</text>
+    <text x="12" y="126" fill="#94a3b8" font-size="11">updated_at : TIMESTAMP</text>
+  </g>
+
+  <!-- 2. TENANTS -->
+  <g transform="translate(60, 340)" filter="url(#shadow)">
+    <rect width="240" height="160" rx="10" fill="#1e293b" stroke="#059669" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#tenantGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#tenantGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">tenants (Branches)</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#f59e0b" font-size="11" font-family="monospace">FK organization_id : UUID</text>
+    <text x="12" y="104" fill="#cbd5e1" font-size="11">name : VARCHAR(255)</text>
+    <text x="12" y="126" fill="#94a3b8" font-size="11">created_at : TIMESTAMP</text>
+    <text x="12" y="146" fill="#34d399" font-size="10" font-weight="600">[INDEX: organization_id]</text>
+  </g>
+
+  <!-- 3. USERS -->
+  <g transform="translate(480, 110)" filter="url(#shadow)">
+    <rect width="240" height="170" rx="10" fill="#1e293b" stroke="#7c3aed" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#userGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#userGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">users</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#cbd5e1" font-size="11">name : VARCHAR(255)</text>
+    <text x="12" y="104" fill="#a7f3d0" font-size="11">email : VARCHAR(255) [UQ]</text>
+    <text x="12" y="126" fill="#94a3b8" font-size="11">password_hash : VARCHAR(255)</text>
+    <text x="12" y="148" fill="#94a3b8" font-size="11">created_at : TIMESTAMP</text>
+  </g>
+
+  <!-- 4. MEMBERSHIPS -->
+  <g transform="translate(480, 340)" filter="url(#shadow)">
+    <rect width="240" height="190" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">memberships (RBAC)</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#f59e0b" font-size="11" font-family="monospace">FK user_id : UUID</text>
+    <text x="12" y="104" fill="#f59e0b" font-size="11" font-family="monospace">FK organization_id : UUID</text>
+    <text x="12" y="126" fill="#f59e0b" font-size="11" font-family="monospace">FK tenant_id : UUID (Nullable)</text>
+    <text x="12" y="148" fill="#fbbf24" font-size="11" font-weight="600">role : 'Org Admin'|'Tenant Admin'|'Member'</text>
+    <text x="12" y="170" fill="#94a3b8" font-size="11">created_at : TIMESTAMP</text>
+  </g>
+
+  <!-- 5. BOARDS -->
+  <g transform="translate(60, 600)" filter="url(#shadow)">
+    <rect width="240" height="190" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">boards</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#f59e0b" font-size="11" font-family="monospace">FK organization_id : UUID</text>
+    <text x="12" y="104" fill="#34d399" font-size="11" font-family="monospace" font-weight="700">FK tenant_id : UUID [ISOLATION]</text>
+    <text x="12" y="126" fill="#cbd5e1" font-size="11">name : VARCHAR(255)</text>
+    <text x="12" y="148" fill="#cbd5e1" font-size="11">description : TEXT</text>
+    <text x="12" y="170" fill="#f59e0b" font-size="11" font-family="monospace">FK created_by : UUID</text>
+  </g>
+
+  <!-- 6. COLUMNS -->
+  <g transform="translate(480, 620)" filter="url(#shadow)">
+    <rect width="240" height="160" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <rect width="240" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="240" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">columns</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#f59e0b" font-size="11" font-family="monospace">FK board_id : UUID</text>
+    <text x="12" y="104" fill="#34d399" font-size="11" font-family="monospace" font-weight="700">FK tenant_id : UUID [ISOLATION]</text>
+    <text x="12" y="126" fill="#cbd5e1" font-size="11">name : VARCHAR(255)</text>
+    <text x="12" y="148" fill="#cbd5e1" font-size="11">position : INTEGER</text>
+  </g>
+
+  <!-- 7. TASKS -->
+  <g transform="translate(870, 360)" filter="url(#shadow)">
+    <rect width="270" height="270" rx="10" fill="#1e293b" stroke="#6366f1" stroke-width="2"/>
+    <rect width="270" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="270" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">tasks (Optimistic Lock)</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="80" fill="#f59e0b" font-size="11" font-family="monospace">FK board_id : UUID</text>
+    <text x="12" y="100" fill="#f59e0b" font-size="11" font-family="monospace">FK column_id : UUID</text>
+    <text x="12" y="120" fill="#34d399" font-size="11" font-family="monospace" font-weight="700">FK tenant_id : UUID [ISOLATION]</text>
+    <text x="12" y="140" fill="#cbd5e1" font-size="11">title : VARCHAR(255)</text>
+    <text x="12" y="160" fill="#cbd5e1" font-size="11">description : TEXT</text>
+    <text x="12" y="180" fill="#f59e0b" font-size="11" font-family="monospace">FK assigned_to : UUID</text>
+    <text x="12" y="200" fill="#fbbf24" font-size="11">priority : Low|Med|High|Urgent</text>
+    <text x="12" y="220" fill="#cbd5e1" font-size="11">position : INTEGER</text>
+    <text x="12" y="240" fill="#f43f5e" font-size="12" font-weight="800" font-family="monospace">version : INTEGER [OCC LOCK]</text>
+    <text x="12" y="260" fill="#94a3b8" font-size="10">created_at, updated_at, due_date</text>
+  </g>
+
+  <!-- 8. ACTIVITY_LOGS -->
+  <g transform="translate(870, 110)" filter="url(#shadow)">
+    <rect width="270" height="200" rx="10" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+    <rect width="270" height="36" rx="10" fill="url(#headerGrad)"/>
+    <rect width="270" height="10" y="26" fill="url(#headerGrad)"/>
+    <text x="12" y="23" fill="#ffffff" font-size="13" font-weight="700">activity_logs (Audit Trail)</text>
+    <text x="12" y="60" fill="#38bdf8" font-size="11" font-family="monospace">PK id : UUID</text>
+    <text x="12" y="82" fill="#34d399" font-size="11" font-family="monospace" font-weight="700">FK tenant_id : UUID [ISOLATION]</text>
+    <text x="12" y="104" fill="#f59e0b" font-size="11" font-family="monospace">FK user_id : UUID</text>
+    <text x="12" y="126" fill="#cbd5e1" font-size="11">entity_type : VARCHAR(50)</text>
+    <text x="12" y="148" fill="#cbd5e1" font-size="11">action : Created|Updated|Moved|Deleted</text>
+    <text x="12" y="170" fill="#a78bfa" font-size="11" font-family="monospace">details : JSONB</text>
+    <text x="12" y="190" fill="#94a3b8" font-size="10">created_at : TIMESTAMP [INDEX]</text>
+  </g>
+
+  <!-- RELATIONSHIP CONNECTORS -->
+  <g stroke="#64748b" stroke-width="1.5" fill="none">
+    <!-- Organizations -> Tenants -->
+    <path d="M 180 260 L 180 340" marker-end="url(#arrow)"/>
+    <!-- Tenants -> Boards -->
+    <path d="M 180 500 L 180 600"/>
+    <!-- Boards -> Columns -->
+    <path d="M 300 690 L 480 690"/>
+    <!-- Columns -> Tasks -->
+    <path d="M 720 690 L 800 690 L 800 500 L 870 500"/>
+    <!-- Users -> Memberships -->
+    <path d="M 600 280 L 600 340"/>
+    <!-- Users -> Tasks (assignee) -->
+    <path d="M 720 190 L 800 190 L 800 450 L 870 450"/>
+  </g>
+</svg>
